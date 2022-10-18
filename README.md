@@ -2,7 +2,7 @@
 
 Construcción del Frontend, equipo de trabajo Picacodigos
 
--Recuerda develop trabajar en localhost:8080
+-Recuerda develop trabajar en localhost y puerto indicado por vuejs
 -Trabajar sobre la rama develop y feature
 -git checkout develop "Para cambiar a la rama de desarrollo"
 -git push origin develop "Para subir los cambios a la rama remota de develop"
