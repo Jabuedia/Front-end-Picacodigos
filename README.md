@@ -1,14 +1,6 @@
-# Front-end-Picacodigos
+# ProyectoPicaCodigos
 
-Construcción del Frontend, equipo de trabajo Picacodigos
-
--Recuerda develop trabajar en localhost y puerto indicado por vuejs
--Trabajar sobre la rama develop y feature
--git checkout develop "Para cambiar a la rama de desarrollo"
--git push origin develop "Para subir los cambios a la rama remota de develop"
--git checkout feature "Para cambiar a la rama de carateristica"
--git merge feature "Para combinar las ramas feature y develop estando en la rama develop usar el comando de checkout"
-
+This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
@@ -34,4 +26,10 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
 ```
