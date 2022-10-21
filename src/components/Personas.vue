@@ -9,13 +9,17 @@
 <div id="app" class="container col-12">
         <div style="margin-top: 60px;">
             <h1 style="text-align: center;">Gestión de Personas</h1>
-        </div><br>
+        </div>
+        
+        
+
+        <br>
         <div class="card col-5" style="float:left; margin:12px; min-height: 240px;width: 150%;">
             <div class="card-body">
                 <h5 class="card-title" style="margin-bottom: 12px;">Acciones</h5>
                 <div class="card-text">
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Documento: </span>
+                        <span class="input-group-text">Email: </span>
                         <input type="text" placeholder="Digite el documento..." v-model="documento" aria-label="Last name"
                             class="form-control">
                     </div>
@@ -25,7 +29,7 @@
                             class="form-control">
                     </div>
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Apellido: </span>
+                        <span class="input-group-text">Telefono: </span>
                         <input type="text" placeholder="Digite el apellido..." v-model="apellido" aria-label="Last name"
                             class="form-control">
                     </div>
@@ -37,6 +41,8 @@
                         class="btn btn-outline-primary">Actualizar</button>
                     <button @click="eliminar" :disabled="botonActualizarDeshabilitado" type="button"
                         class="btn btn-outline-danger">Eliminar</button>
+                    <button @click="consultarPersonas" :disabled="noExisteToken" type="button"
+                        class="btn btn-outline-primary">Consultar</button>    
                 </div>
             </div>
         </div>
@@ -58,10 +64,151 @@
     </div>
     </div>
   </template>
-  <script>
+<script>
+ 
+    export default({
+        name:'Personas',
+        data() {
+            return {
+                nombres: [],
+                seleccionado: '',
+                prefijo: '',
+                nombre: '',
+                apellido: '',
+                token: localStorage.getItem('token'),
+                mensajeError: '',
+                actualizando: false,
+                nombre: ''
+            }
+        },
+        computed: {
+            nombresFiltrados() {
+                return this.nombres.filter((n) =>
+                    n.toLowerCase().startsWith(this.prefijo.toLowerCase())
+                )
+            },
+            botonCrearDeshabilitado() {
+                return this.actualizando;
+            },
+            botonActualizarDeshabilitado() {
+                return !this.actualizando;
+            },
+            noExisteToken() {
+                return !this.token=="pendiente";
+            }
+        },
+        watch: {
+            seleccionado(nombreCompleto) {
+                [this.nombre, this.apellido] = nombreCompleto.toString().split(', ');
+            }
+        }, 
+        methods:{
+            crear() {
+                if (this.entradaValida()) {
+                    this.crearPersona(this.nombre, this.apellido);
+                    const nombreCompleto = `${this.nombre}, ${this.apellido}`
+                    if (!this.nombres.includes(nombreCompleto)) {
+                        this.nombres.push(nombreCompleto)
+                        this.nombre = this.apellido = '';
+                        mensajeError = '';
+                        this.actualizando = false;
+                        this.$forceUpdate();
+                    }
+                } else {
+                    mensajeError = "Por favor ingrese todos los datos para crear la persona.";
+                }
+            },
+            actualizar() {
+                if (this.entradaValida() && this.seleccionado) {
+                    const i = this.nombres.indexOf(this.seleccionado);
+                    this.nombres[i] = this.seleccionado = `${this.apellido}, ${this.nombre}`;
+                    this.seleccionado = this.nombre = this.apellido = '';
+                    mensajeError = '';
+                    this.actualizando = false;
+                    this.$forceUpdate();
+                } else {
+                    mensajeError = "Por favor ingrese todos los datos para actualizar la información.";
+                }
+            },
+            eliminar() {
+                if (this.seleccionado) {
+                    const i = this.nombres.indexOf(this.seleccionado);
+                    this.nombres.splice(i, 0);
+                    this.seleccionado = this.nombre = this.apellido = '';
+                    mensajeError = '';
+                    this.actualizando = false;
+                }
+            },
+            entradaValida() {
+                return this.nombre.trim() && this.apellido.trim();
+            },
+        
+        async consultarPersonas() {
+            const options = {
+                method: 'GET',
+                
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token                }
+            };
+
+            fetch('http://localhost:8080/api/personas', options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                        const data = await response.json();
+                        console.log(data);
+                        for (const indice in data){
+                            this.nombres.push(data[indice].nombre  +' '+ data[indice].telefono)
+                        } 
+                        
+                    }
+                });
+        },
+        async crearPersona (nombrePersona, apellidoPersona){
+            const options = {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                email: nombrePersona + '@gmail.com', 
+                nombre: nombrePersona,
+                telefono: apellidoPersona,
+                
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+
+            fetch('http://localhost:8080/api/personas', options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                        const data = await response.json();
+                        console.log(data);
+                                               
+                    }
+                });
+
+        
+        }
+    }
+    
+});
 
 </script>
-  <style>
+<style>
   
   </style>
   
