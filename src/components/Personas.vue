@@ -41,8 +41,8 @@
                         class="btn btn-outline-primary">Actualizar</button>
                     <button @click="eliminarP" :disabled="botonActualizarDeshabilitadoP" type="button"
                         class="btn btn-outline-danger">Eliminar</button>
-                    <button @click="consultarPersonas" :disabled="noExisteTokenP" type="button"
-                        class="btn btn-outline-primary">Consultar</button>    
+                    <button @click="limpiarformulario" :disabled="noExisteTokenP" type="button"
+                        class="btn btn-outline-primary">Recargar</button>    
                 </div>
             </div>
         </div>
@@ -151,11 +151,11 @@ import AppVue from '../App.vue';
                 return this.nombre.trim() && this.apellido.trim();
             },
             limpiarformulario(){
-                //AppVue.recargateplis(option:{''});
+                location.reload();
             },
         
         async consultarPersonas() {
-            this.limpiarformulario();
+            
             const options = {
                 method: 'GET',
                 
@@ -239,7 +239,7 @@ import AppVue from '../App.vue';
                 } else {
                     this.mensajeError = "Por favor ingrese todos los datos para crear la persona.";
                 }
-                location.reload();
+                
             },
         async actualizarPersona (nombrePersona, apellidoPersona, emailPersona, idpers){
             const direccion = 'http://localhost:8080/api/personas/'+idpers;
