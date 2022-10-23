@@ -35,13 +35,13 @@
                     </div>
                 </div>
                 <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-top:12px">
-                    <button @click="crear" :disabled="botonCrearDeshabilitado" type="button"
+                    <button @click="crearP" :disabled="botonCrearDeshabilitadoP" type="button"
                         class="btn btn-outline-primary">Crear</button>
-                    <button @click="actualizar" :disabled="botonActualizarDeshabilitado" type="button"
+                    <button @click="actualizarP" :disabled="botonActualizarDeshabilitadoP" type="button"
                         class="btn btn-outline-primary">Actualizar</button>
-                    <button @click="eliminar" :disabled="botonActualizarDeshabilitado" type="button"
+                    <button @click="eliminarP" :disabled="botonActualizarDeshabilitadoP" type="button"
                         class="btn btn-outline-danger">Eliminar</button>
-                    <button @click="consultarPersonas" :disabled="noExisteToken" type="button"
+                    <button @click="consultarPersonas" :disabled="noExisteTokenP" type="button"
                         class="btn btn-outline-primary">Consultar</button>    
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
 
-                <select size="6" v-model="seleccionado" class="form-select" aria-label="multiple select example">
+                <select size="6"  v-model="seleccionado" class="form-select" aria-label="multiple select example">
                     <option v-for="nombreCompleto in nombresFiltrados" :key="nombreCompleto" @click="actualizando=true">
                         {{ nombreCompleto }}</option>
                 </select>
@@ -65,85 +65,97 @@
     </div>
   </template>
 <script>
+//import AppVue from '../App.vue';
+
+import AppVue from '../App.vue';
+
  
     export default({
         name:'Personas',
         data() {
             return {
+                recargateplis:1,
                 nombres: [],
                 seleccionado: '',
+                idP: '',
                 prefijo: '',
                 nombre: '',
                 apellido: '',
+                documento: '',
                 token: localStorage.getItem('token'),
-                mensajeError: '',
+                mensajeErrorP: '',
                 actualizando: false,
-                nombre: ''
+                
             }
         },
+        mounted(){
+     
+             this.consultarPersonas();
+        },
+        
         computed: {
             nombresFiltrados() {
                 return this.nombres.filter((n) =>
                     n.toLowerCase().startsWith(this.prefijo.toLowerCase())
                 )
             },
-            botonCrearDeshabilitado() {
+            botonCrearDeshabilitadoP() {
                 return this.actualizando;
             },
-            botonActualizarDeshabilitado() {
+            botonActualizarDeshabilitadoP() {
                 return !this.actualizando;
             },
-            noExisteToken() {
+            noExisteTokenP() {
                 return !this.token=="pendiente";
             }
         },
         watch: {
             seleccionado(nombreCompleto) {
-                [this.nombre, this.apellido] = nombreCompleto.toString().split(', ');
+                [this.nombre, this.apellido, this.documento, this.idP] = nombreCompleto.toString().split(', ');
+                
             }
+            
         }, 
         methods:{
-            crear() {
-                if (this.entradaValida()) {
-                    this.crearPersona(this.nombre, this.apellido);
-                    const nombreCompleto = `${this.nombre}, ${this.apellido}`
-                    if (!this.nombres.includes(nombreCompleto)) {
-                        this.nombres.push(nombreCompleto)
-                        this.nombre = this.apellido = '';
-                        mensajeError = '';
-                        this.actualizando = false;
-                        this.$forceUpdate();
-                    }
-                } else {
-                    mensajeError = "Por favor ingrese todos los datos para crear la persona.";
-                }
-            },
-            actualizar() {
+            
+            actualizarP() {
+
                 if (this.entradaValida() && this.seleccionado) {
+                    this.actualizarPersona(this.nombre, this.apellido, this.documento, this.idP);
                     const i = this.nombres.indexOf(this.seleccionado);
-                    this.nombres[i] = this.seleccionado = `${this.apellido}, ${this.nombre}`;
-                    this.seleccionado = this.nombre = this.apellido = '';
-                    mensajeError = '';
+                    this.nombres[i] = this.seleccionado = `${this.nombre}, ${this.apellido}, ${this.documento}, ${this.idP}`;
+                    this.nombre = this.apellido = this.documento=this.idP='';
+                    this. mensajeErrorP = '';
                     this.actualizando = false;
                     this.$forceUpdate();
                 } else {
-                    mensajeError = "Por favor ingrese todos los datos para actualizar la información.";
+                    this.mensajeErrorP = "Por favor ingrese todos los datos para actualizar la información.";
                 }
             },
-            eliminar() {
+            eliminarP() {
+                this.eliminarPersona(this.idP);
+                
                 if (this.seleccionado) {
                     const i = this.nombres.indexOf(this.seleccionado);
+                    
                     this.nombres.splice(i, 0);
-                    this.seleccionado = this.nombre = this.apellido = '';
-                    mensajeError = '';
+                    this.nombre = this.apellido = this.documento=this.idP='';
+                    this.mensajeError = '';
                     this.actualizando = false;
+                    this.$forceUpdate();
+                    
                 }
+                
             },
             entradaValida() {
                 return this.nombre.trim() && this.apellido.trim();
             },
+            limpiarformulario(){
+                //AppVue.recargateplis(option:{''});
+            },
         
         async consultarPersonas() {
+            this.limpiarformulario();
             const options = {
                 method: 'GET',
                 
@@ -164,18 +176,20 @@
                         const data = await response.json();
                         console.log(data);
                         for (const indice in data){
-                            this.nombres.push(data[indice].nombre  +' '+ data[indice].telefono)
+                            
+                            this.nombres.push(data[indice].nombre  +', '+ data[indice].telefono+', '+ data[indice].email+', '+ data[indice].idpersona)
+                            
                         } 
                         
                     }
                 });
         },
-        async crearPersona (nombrePersona, apellidoPersona){
+        async crearPersona (nombrePersona, apellidoPersona, emailPersona){
             const options = {
             method: 'POST',
             body: JSON.stringify(
                 {
-                email: nombrePersona + '@gmail.com', 
+                email: emailPersona, 
                 nombre: nombrePersona,
                 telefono: apellidoPersona,
                 
@@ -194,9 +208,101 @@
                         this.mensajeError = error.message;
                         throw error;
                     } else {
+                        const data = await response.json();
+                        console.log(data);
+                        
+                        this.idP=String(data['idpersona']);
+                        console.log(this.idP);
+                        localStorage.setItem('idcreado', this.idP);
+                        
+                                               
+                    }
+                });
+
+        
+        },
+        crearP() {
+                if (this.entradaValida()) {
+                    //this.limpiarformulario();
+                    this.crearPersona(this.nombre, this.apellido, this.documento);
+                    //this.consultarPersonas();
+                    //console.log(localStorage.getItem("idcreado"));
+                    const nombreCompleto = `${this.nombre}, ${this.apellido}, ${this.documento}, ${this.idP}`
+                    if (!this.nombres.includes(nombreCompleto)) {
+                        this.nombres.push(nombreCompleto)
+                        this.nombre = this.apellido = this.documento='';
+                        this.mensajeError = '';
+                        this.actualizando = false;
+                        this.$forceUpdate();
+                    }
+                    
+                } else {
+                    this.mensajeError = "Por favor ingrese todos los datos para crear la persona.";
+                }
+                location.reload();
+            },
+        async actualizarPersona (nombrePersona, apellidoPersona, emailPersona, idpers){
+            const direccion = 'http://localhost:8080/api/personas/'+idpers;
+            const options = {
+            method: 'PUT',
+            body: JSON.stringify(
+                {
+                    idpersona: idpers,
+                    email: emailPersona, 
+                    nombre: nombrePersona,
+                    telefono: apellidoPersona,
+                
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+            
+            fetch(direccion, options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
                         
                         const data = await response.json();
                         console.log(data);
+                                               
+                    }
+                });
+
+        
+        },
+        async eliminarPersona (idpers){
+            const direccion = 'http://localhost:8080/api/personas/'+idpers;
+            const options = {
+            method: 'DELETE',
+            body: JSON.stringify(
+                {
+                    idpersona: idpers,
+                                    
+                }),
+            
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+            
+            fetch(direccion, options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                        //const data = await response.json();
+                        console.log("id eliminado");
                                                
                     }
                 });
