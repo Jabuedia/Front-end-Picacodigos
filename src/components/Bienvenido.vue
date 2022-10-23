@@ -1,5 +1,5 @@
 <template>
-    <div class="contenedor">
+    <div class="contenedor" style="color: rgb(37, 34, 34); font-family:'roboto';">
       <h1 class="bienvenida">{{mensage}}</h1>
       <p>{{contenido}}</p><br><br><br>
     </div>

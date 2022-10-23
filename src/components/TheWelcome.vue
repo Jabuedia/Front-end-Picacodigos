@@ -3,7 +3,7 @@
     <div class="card_landing" style="--i:url(https://www.oikos.com.co/inmobiliaria/images/Noticias_2021/linea1.jpg)">
     </div>
 
-    <div class="card_info">
+    <div class="card_info" style="color: rgb(37, 34, 34);">
       <div class="head">
         <p class="title">Mas informacion</p>
       <div class="descripcion">
@@ -17,7 +17,7 @@
         </div>
       </div>
       </div> 
-      <div class="content">
+      <div class="content" style="color: rgb(37, 34, 34);">
         <p class="title">
           Mis acciones:
         </p>
@@ -86,7 +86,7 @@ margin-top: -15%;
   align-items: center;
 }
 .card_info .head .descripcion .item i{
-  color:  rgb(103, 204, 103);
+  color:black;
   font-size: 15px;
 }
 .card_info .head .descripcion .item p{
