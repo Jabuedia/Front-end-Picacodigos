@@ -18,11 +18,7 @@
             <div class="card-body">
                 <h5 class="card-title" style="margin-bottom: 12px;">Acciones</h5>
                 <div class="card-text">
-                    <div class="input-group mb-2">
-                        <span class="input-group-text">Email: </span>
-                        <input type="text" placeholder="Digite el documento..." v-model="documento" aria-label="Last name"
-                            class="form-control">
-                    </div>
+                    
                     <div class="input-group mb-2">
                         <span class="input-group-text">Nombre: </span>
                         <input type="text" placeholder="Digite el nombre..." v-model="nombre" aria-label="First name"
@@ -39,6 +35,8 @@
                         class="btn btn-outline-primary">Crear</button>
                     <button @click="actualizarP" :disabled="botonActualizarDeshabilitadoP" type="button"
                         class="btn btn-outline-primary">Actualizar</button>
+                        <button @click="actualizarA" :disabled="botonActualizarDeshabilitadoP" type="button"
+                        class="btn btn-outline-primary">Confirmar</button>
                     <button @click="eliminarP" :disabled="botonActualizarDeshabilitadoP" type="button"
                         class="btn btn-outline-danger">Eliminar</button>
                     <button @click="limpiarformulario" :disabled="noExisteTokenP" type="button"
@@ -76,6 +74,7 @@ import AppVue from '../App.vue';
             return {
                 recargateplis:1,
                 apartamentos: [],
+                personaBuscada: '',
                 seleccionado: '',
                 idP: '',
                 prefijo: '',
@@ -121,17 +120,22 @@ import AppVue from '../App.vue';
             actualizarP() {
 
                 if (this.entradaValida() && this.seleccionado) {
-                    const data = this.consultarPersonas(this.idP)
-                    this.actualizarPersona(this.nombre, data, idP);
+                    this.personaBuscada = this.consultarPersonas(Number(this.apellido))
+                    
+                   
                     const i = this.apartamentos.indexOf(this.seleccionado);
                     this.apartamentos[i] = this.seleccionado = `${this.nombre}, ${this.apellido}, ${this.idP}`;
                     this.nombre = this.apellido = this.documento=this.idP='';
                     this. mensajeErrorP = '';
-                    this.actualizando = false;
+                    this.actualizando = true;
                     this.$forceUpdate();
                 } else {
                     this.mensajeErrorP = "Por favor ingrese todos los datos para actualizar la información.";
                 }
+            },
+            actualizarA(){
+                console.log(this.personaBuscada);
+                this.actualizarPersona(this.nombre,this.personaBuscada,this.idP)
             },
             eliminarP() {
                 this.eliminarApartamento(this.idP);
@@ -178,21 +182,17 @@ import AppVue from '../App.vue';
                         console.log(data);
                         for (const indice in data){
                             
-                            this.apartamentos.push(data[indice].valor+', '+ data[indice].idpropietario+', '+ data[indice].idinmueble)
+                            this.apartamentos.push(data[indice].valor+', '+ data[indice].idpropietario.idpersona+', '+ data[indice].idinmueble)
                             
                         } 
                         
                     }
                 });
         },async consultarPersonas(idpers) {
-            const direccion = 'http://localhost:8080/api/personas/'+idpers;
+            const direccion = 'http://localhost:8080/api/personas';
             const options = {
-                method: 'PUT',
-                body: JSON.stringify(
-                {
-                    idpersona: 1,
+                method: 'GET',
                 
-                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer '+this.token                }
@@ -206,21 +206,33 @@ import AppVue from '../App.vue';
                         this.mensajeError = error.message;
                         throw error;
                     } else {
-                        
-                        return data = await response.json();
-                        
+                        const data = await response.json();
+                        for (const indice in data){
+                            
+                            if (data[indice].idpersona == idpers){
+
+                                const personaBuscada1 = data[indice];
+                                this.personaBuscada=personaBuscada1;
+                                //console.log(personaBuscada);
+                                return personaBuscada1;
+
+                            }
+                            
+                        } 
                         
                     }
                 });
         },
-        async crearPersona (nombrePersona, apellidoPersona, emailPersona){
+        async crearPersona (nombrePersona ){
             const options = {
             method: 'POST',
             body: JSON.stringify(
                 {
-                email: emailPersona, 
-                nombre: nombrePersona,
-                telefono: apellidoPersona,
+                    
+                    descripcion:0,
+                    valor: nombrePersona,
+                    idconjunto: null,
+                    idpropietario: null,  
                 
                 }),
                 headers: {
@@ -229,7 +241,7 @@ import AppVue from '../App.vue';
                 }                
             };
 
-            fetch('http://localhost:8080/api/personas', options)
+            fetch('http://localhost:8080/api/inmuebles', options)
                 .then(async (response) => {
                     if (!response.ok) {
                         const error = new Error(response.statusText);
@@ -240,7 +252,7 @@ import AppVue from '../App.vue';
                         const data = await response.json();
                         console.log(data);
                         
-                        this.idP=String(data['idpersona']);
+                        this.idP=String(data['idinmueble']);
                         console.log(this.idP);
                         localStorage.setItem('idcreado', this.idP);
                         
@@ -253,10 +265,10 @@ import AppVue from '../App.vue';
         crearP() {
                 if (this.entradaValida()) {
                     //this.limpiarformulario();
-                    this.crearPersona(this.nombre, this.apellido, this.documento);
+                    this.crearPersona(Number(this.nombre));
                     //this.consultarPersonas();
                     //console.log(localStorage.getItem("idcreado"));
-                    const nombreCompleto = `${this.nombre}, ${this.apellido}, ${this.documento}, ${this.idP}`
+                    //const nombreCompleto = `${this.nombre}, ${this.apellido}, ${this.documento}, ${this.idP}`
                     if (!this.nombres.includes(nombreCompleto)) {
                         this.nombres.push(nombreCompleto)
                         this.nombre = this.apellido = this.documento='';
