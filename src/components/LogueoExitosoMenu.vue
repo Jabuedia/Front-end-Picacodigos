@@ -95,7 +95,7 @@
     }
 }
   </script>
-  <style>
+  <style scoped>
   .firma-card{
   background: rgb(103, 204, 103);
   border: 1px solid;

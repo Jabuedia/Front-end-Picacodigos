@@ -34,7 +34,7 @@
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .card{
 position: relative;
 width: 350px;

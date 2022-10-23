@@ -86,7 +86,7 @@ export default({
 
 /* STYLE */
 
-<style>
+<style scoped>
   a {
   color: rgb(103, 204, 103);
   display:inline-block;

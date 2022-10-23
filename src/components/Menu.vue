@@ -30,7 +30,7 @@ export default ({
     }
 })
 </script>
-<style>
+<style scoped>
 .principal{
   background: rgb(103, 204, 103);
   box-shadow: 0 10px 40px 0 rgb(255, 255, 255);

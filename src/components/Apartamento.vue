@@ -21,12 +21,12 @@
                     
                     <div class="input-group mb-2">
                         <span class="input-group-text">Valor: </span>
-                        <input type="text" placeholder="Digite el nombre..." v-model="nombre" aria-label="First name"
+                        <input type="text" placeholder="Digite el valor..." v-model="nombre" aria-label="First name"
                             class="form-control">
                     </div>
                     <div class="input-group mb-2">
                         <span class="input-group-text">Propietario: </span>
-                        <input type="text" placeholder="Digite el apellido..." v-model="apellido" aria-label="Last name"
+                        <input type="text" placeholder="Digite el ID propietario..." v-model="apellido" aria-label="Last name"
                             class="form-control">
                     </div>
                 </div>
@@ -356,9 +356,6 @@ import AppVue from '../App.vue';
 });
 
 </script>
-<style>
-  
-  </style>
   
   
   

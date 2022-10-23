@@ -7,7 +7,7 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
 <div id="app" class="container col-12">
-        <div style="margin-top: 60px;">
+        <div style="margin-top: 40px;">
             <h1 style="text-align: center;">Gestión de Factura</h1>
         </div>
         
@@ -20,12 +20,12 @@
                 <div class="card-text">
                     
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Valor: </span>
+                        <span class="input-group-text">Fecha: </span>
                         <input type="text" placeholder="Digite la fecha..." v-model="nombre" aria-label="First name"
                             class="form-control">
                     </div>
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Propietario: </span>
+                        <span class="input-group-text">Mes: </span>
                         <input type="text" placeholder="Digite el mes..." v-model="apellido" aria-label="Last name"
                             class="form-control">
                     </div>
@@ -371,9 +371,7 @@ import AppVue from '../App.vue';
 });
 
 </script>
-<style>
-  
-  </style>
+
   
   
   

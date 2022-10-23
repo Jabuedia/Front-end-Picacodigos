@@ -20,7 +20,7 @@
                 <div class="card-text">
                     <div class="input-group mb-2">
                         <span class="input-group-text">Email: </span>
-                        <input type="text" placeholder="Digite el documento..." v-model="documento" aria-label="Last name"
+                        <input type="text" placeholder="Digite el email..." v-model="documento" aria-label="Last name"
                             class="form-control">
                     </div>
                     <div class="input-group mb-2">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="input-group mb-2">
                         <span class="input-group-text">Telefono: </span>
-                        <input type="text" placeholder="Digite el apellido..." v-model="apellido" aria-label="Last name"
+                        <input type="text" placeholder="Digite el telefon..." v-model="apellido" aria-label="Last name"
                             class="form-control">
                     </div>
                 </div>
@@ -314,8 +314,6 @@ import AppVue from '../App.vue';
 });
 
 </script>
-<style>
-  
-  </style>
+
   
   

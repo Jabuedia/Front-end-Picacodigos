@@ -17,7 +17,7 @@
   },
   })
   </script>
-  <style>
+  <style scoped>
   .contenedor{
     margin-bottom: -50%;
     margin-left: -130%;

@@ -7,14 +7,14 @@
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .principal{
   background: rgb(103, 204, 103);
   box-shadow: 0 10px 40px 0 rgb(255, 255, 255);
   width: 200%;
   height: 70px;
   border-radius: 10px;
-  margin-top: -15%;
+  margin-top: -9%;
   margin-left: 1%;
 }
 </style>
