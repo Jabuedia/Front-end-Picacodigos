@@ -1,184 +1,379 @@
 <template>
     <div>
-
         <head>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-                integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-                crossorigin="anonymous">
-        </head>
-        <div id="app" class="container col-12">
-            <div style="margin-top: 60px;">
-                <h1 style="text-align: center;">Gestión de Facturas</h1>
-            </div><br>
-            <div class="card col-5" style="float:left; margin:12px; min-height: 240px;width: 150%;">
-                <div class="card-body">
-                    <h5 class="card-title" style="margin-bottom: 12px;">Crear factura</h5>
-                    <div class="card-text">
-                        <div class="input-group mb-2">
-                            <span class="input-group-text">id inmueble: </span>
-                            <input type="text" name="example" list="exampleList" v-model="idInmueble">
-                                <datalist id="exampleList">
-                                    <option value="1"></option>  
-                                    <option value="2"></option>
-                                </datalist>
-                        </div>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text">Mes: </span>
-                            <input type="month" placeholder="Mes a facturar..." v-model="mes"
-                                   class="form-control">
-                        </div>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text">Fecha limite: </span>
-                            <input type="month" placeholder="Fecha limite de pago..." v-model="fechaVencimiento"
-                                   class="form-control">
-                        </div>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text">Total: </span>
-                            <input type="text" placeholder="total..." v-model="total"
-                                  class="form-control">
-                        </div>
-                    </div>
-                    <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-top:12px">
-                        <button @click="crear" type="button"
-                            class="btn btn-outline-primary">Crear</button>
-                        <button @click="actualizar" :disabled="botonActualizarDeshabilitado" type="button"
-                            class="btn btn-outline-primary">Actualizar</button>
-                        <button @click="eliminar" :disabled="botonActualizarDeshabilitado" type="button"
-                            class="btn btn-outline-danger">Eliminar</button>
-                        <button @click="consultarFacturas" type="button"
-                            class="btn btn-outline-primary">Colsutar</button>
-                    </div>
-                </div>
-            </div>
-            <div class="card col-12" style="float:left; margin:12px;margin-left: 70%;width: 200%; min-height: 250px;">
-                <div class="card-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default">Consultar: </span>
-                        <input v-model="prefijo" placeholder="Digite el texto..." class="form-control"
-                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-
-                    <select size="6" v-model="seleccionado" class="form-select" aria-label="multiple select example">
-                        <option v-for="info in facturasFiltradas" :key="info" @click="actualizando=true">
-                            {{ info }}</option>
-                    </select>
-                </div>
-            </div>
-            <br>
+    <meta charset="UTF-8">
+    <title>Personas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+<div id="app" class="container col-12">
+        <div style="margin-top: 60px;">
+            <h1 style="text-align: center;">Gestión de Factura</h1>
         </div>
+        
+        
+
+        <br>
+        <div class="card col-5" style="float:left; margin:12px; min-height: 240px;width: 165%;">
+            <div class="card-body">
+                <h5 class="card-title" style="margin-bottom: 12px;">Acciones</h5>
+                <div class="card-text">
+                    
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Valor: </span>
+                        <input type="text" placeholder="Digite la fecha..." v-model="nombre" aria-label="First name"
+                            class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Propietario: </span>
+                        <input type="text" placeholder="Digite el mes..." v-model="apellido" aria-label="Last name"
+                            class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Total: </span>
+                        <input type="text" placeholder="Digite el total..." v-model="total" aria-label="First name"
+                            class="form-control">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Inmueble: </span>
+                        <input type="text" placeholder="Digite el ID inmueble..." v-model="inmueble" aria-label="Last name"
+                            class="form-control">
+                    </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-top:12px">
+                    <button @click="crearP" :disabled="botonCrearDeshabilitadoP" type="button"
+                        class="btn btn-outline-primary">Crear</button>
+                    <button @click="actualizarP" :disabled="botonActualizarDeshabilitadoP" type="button"
+                        class="btn btn-outline-primary">Actualizar</button>
+                        <button @click="actualizarA" :disabled="botonActualizarDeshabilitadoP" type="button"
+                        class="btn btn-outline-primary">Confirmar</button>
+                    <button @click="eliminarP" :disabled="botonActualizarDeshabilitadoP" type="button"
+                        class="btn btn-outline-danger">Eliminar</button>
+                    <button @click="limpiarformulario" :disabled="noExisteTokenP" type="button"
+                        class="btn btn-outline-primary">Recargar</button>    
+                </div>
+            </div>
+        </div>
+        <div class="card col-12" style="float:left; margin:12px;margin-left: 80%;width: 200%; min-height: 250px;">
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Consultar: </span>
+                    <input v-model="prefijo" placeholder="Digite el texto..." class="form-control"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+
+                <select size="6"  v-model="seleccionado" class="form-select" aria-label="multiple select example">
+                    <option v-for="nombreCompleto in nombresFiltrados" :key="nombreCompleto" @click="actualizando=true">
+                        {{ nombreCompleto }}</option>
+                </select>
+            </div>
+        </div>
+        <br>
     </div>
-</template>
+    </div>
+  </template>
 <script>
-export default ({
-    name: 'Facturas',
-    data() {
-        return {
-            seleccionado: '',
-            prefijo: '',
-            mes: '',
-            fechaVencimiento: '',
-            idInmueble: '',
-            total: '',
-            facturas: [],
-            token: localStorage.getItem("token"),
-            mensajeError: '',
-            actualizando: false,
-            nombre: ''
-        }
-    },
-    watch: {
-        seleccionado(info) {
-            [this.mes, this.total] = info.toString().split(', ');
-        }
-    },    
-    computed: {
-        noExisteToken(){
-            return this.token == 'pendiente';
+//import AppVue from '../App.vue';
+
+import AppVue from '../App.vue';
+
+ 
+    export default({
+        name:'Personas',
+        data() {
+            return {
+                recargateplis:1,
+                apartamentos: [],
+                personaBuscada: '',
+                seleccionado: '',
+                idP: '',
+                prefijo: '',
+                nombre: '',
+                apellido: '',
+                documento: '',
+                total: '',
+                inmueble: '',
+                token: localStorage.getItem('token'),
+                mensajeErrorP: '',
+                actualizando: false,
+                
+            }
         },
-        facturasFiltradas(){
-            return this.facturas.filter((n) =>
-                n.toLowerCase().startsWith(this.prefijo.toLowerCase())
-            )
-        }
-    },
-    methods: {
-        entradaValida() {
-            return this.mes.trim() && this.total.trim() && this.idInmueble && this.fechaVencimiento;
+        mounted(){
+     
+             this.consultarApartamentos();
         },
-        crear() {
-            if (this.entradaValida()) {
-                this.crearFacturas(this.mes, this.total, this.fechaVencimiento, this.idInmueble)
-                const factura = `${this.mes}, ${this.total}, ${this.fechaVencimiento}, ${this.idInmueble}`
-                if (!this.facturas.includes(factura)) {
-                    this.facturas.push(factura)
-                    this.mes = this.total = this.fechaVencimiento = this.idInmueble = '';
+        
+        computed: {
+            nombresFiltrados() {
+                return this.apartamentos.filter((n) =>
+                    n.toLowerCase().startsWith(this.prefijo.toLowerCase())
+                )
+            },
+            botonCrearDeshabilitadoP() {
+                return this.actualizando;
+            },
+            botonActualizarDeshabilitadoP() {
+                return !this.actualizando;
+            },
+            noExisteTokenP() {
+                return !this.token=="pendiente";
+            }
+        },
+        watch: {
+            seleccionado(nombreCompleto) {
+                [this.nombre, this.apellido, this.total, this.inmueble, this.idP] = nombreCompleto.toString().split(', ');
+                
+            }
+            
+        }, 
+        methods:{
+            
+            actualizarP() {
+
+                if (this.entradaValida() && this.seleccionado) {
+                    console.log(this.inmueble);
+                    this.personaBuscada = this.consultarPersonas(Number(this.inmueble))
+                    
+                   
+                    const i = this.apartamentos.indexOf(this.seleccionado);
+
+                    this.apartamentos[i] =this.seleccionado= `${this.nombre}, ${this.apellido}, ${this.total}, ${this.inmueble}, ${this.idP}`;
+                    this.nombre = this.apellido =this.total=this.inmueble =this.idP='';
+                    this. mensajeErrorP = '';
+                    this.actualizando = true;
+                    this.$forceUpdate();
+                } else {
+                    this.mensajeErrorP = "Por favor ingrese todos los datos para actualizar la información.";
+                }
+            },
+            actualizarA(){
+                console.log(this.personaBuscada);
+                console.log(this.idnmu);
+                this.actualizarPersona(this.nombre,this.apellido,Number(this.total),this.personaBuscada,this.idP)
+            },
+            eliminarP() {
+                this.eliminarApartamento(this.idP);
+                
+                if (this.seleccionado) {
+                    const i = this.apartamentos.indexOf(this.seleccionado);
+                    
+                    this.apartamentos.splice(i, 0);
+                    this.nombre = this.apellido = this.total=this.inmueble=this.idP='';
                     this.mensajeError = '';
                     this.actualizando = false;
                     this.$forceUpdate();
+                    
                 }
-            } else {
-                this.mensajeError = "Por favor ingrese todos los datos para crear la persona.";
-            }
-        },
-        async consultarFacturas() {
+                
+            },
+            entradaValida() {
+                return this.nombre.trim() && this.apellido.trim();
+            },
+            limpiarformulario(){
+                location.reload();
+            },
+        
+        async consultarApartamentos() {
+            
             const options = {
                 method: 'GET',
+                
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+ this.token,
-                }
+                    'Authorization': 'Bearer '+this.token                }
             };
+
             fetch('http://localhost:8080/api/facturas', options)
-            .then(async (response) => {
-                if (!response.ok) {
-                    const error = new Error(response.statusText);
-                    error.json = response.json();
-                    this.mensajeError = error.message;
-                    console.log(error.message);
-                    throw error;
-                } else {
-                    const data = await response.json();
-                    for(const indice in data){
-                        this.facturas.push(data[indice].mes+", "+data[indice].total);
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                        const data = await response.json();
+                        console.log(data);
+                        for (const indice in data){
+                            
+                            this.apartamentos.push(data[indice].fechaLimite+', '+ data[indice].mes+', '+ data[indice].total+', '+ data[indice].idinmueble+', '+ data[indice].idfactura)
+                            
+                        } 
+                        
                     }
-                    console.log(data);
-                }
-            });
-        },
-        async crearFacturas(mes,total,fechaVencimiento,idInmueble) {
+                });
+        },async consultarPersonas(idinmu) {
+            console.log(idinmu);
+            const direccion = 'http://localhost:8080/api/inmuebles';
             const options = {
-                method: 'POST',
-                body: JSON.stringify({
-                    'mes': mes,
-                    'fecha_limite': fechaVencimiento,
-                    'total': total,
-                    'idinmueble': idInmueble,
-                }
-                ),
+                method: 'GET',
+                
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer '+ this.token,
-                }
+                    'Authorization': 'Bearer '+this.token                }
             };
+
+            fetch(direccion, options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        const data = await response.json();
+                        for (const indice in data){
+                            
+                            if (data[indice].idinmueble == idinmu){
+                                
+                                const personaBuscada1 = data[indice];
+                                this.personaBuscada=personaBuscada1;
+                                
+                                return personaBuscada1;
+
+                            }
+                            
+                        } 
+                        
+                    }
+                });
+        },
+        async crearPersona (fechaFactura,mesFactura,totalFactura){
+            const options = {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                    
+                    fechaLimite:fechaFactura,
+                    mes: mesFactura,
+                    total: totalFactura,
+                    idnmueble: null,  
+                
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+
             fetch('http://localhost:8080/api/facturas', options)
-            .then(async (response) => {
-                if (!response.ok) {
-                    const error = new Error(response.statusText);
-                    error.json = response.json();
-                    this.mensajeError = error.message;
-                    console.log(error.message);
-                    throw error;
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        const data = await response.json();
+                        console.log(data);
+                        
+                        this.idP=String(data['idinmueble']);
+                        console.log(this.idP);
+                        localStorage.setItem('idcreado', this.idP);
+                        
+                                               
+                    }
+                });
+
+        
+        },
+        crearP() {
+                if (this.entradaValida()) {
+                    //this.limpiarformulario();
+                    this.crearPersona(this.nombre,this.apellido,Number(this.total));
+                    //this.consultarPersonas();
+                    //console.log(localStorage.getItem("idcreado"));
+                    const nombreCompleto = `${this.nombre}, ${this.apellido},${this.total},${this.inmueble}, ${this.idP}`
+                    if (!this.apartamentos.includes(nombreCompleto)) {
+                        this.apartamentos.push(nombreCompleto)
+                        this.nombre = this.apellido = this.documento=this.total=this.inmueble ='';
+                        this.mensajeError = '';
+                        this.actualizando = false;
+                        this.$forceUpdate();
+                    }
+                    
                 } else {
-                    const data = await response.json();
-                    console.log(data);
+                    this.mensajeError = "Por favor ingrese todos los datos para crear la persona.";
                 }
-            });
+                
+            },
+        async actualizarPersona (fechaFactura,mesFactura,totalFactura,objetoIn, idpers){
+            const direccion = 'http://localhost:8080/api/facturas/'+idpers;
+            const options = {
+            method: 'PUT',
+            body: JSON.stringify(
+                {
+                    fechaLimite:fechaFactura,
+                    mes: mesFactura,
+                    total: totalFactura,
+                    idinmueble: objetoIn,   
+               
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+            
+            fetch(direccion, options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                        const data = await response.json();
+                        console.log(data);
+                                               
+                    }
+                });
+
+        
+        },
+        async eliminarApartamento(idpers){
+            const direccion = 'http://localhost:8080/api/facturas/'+idpers;
+            const options = {
+            method: 'DELETE',
+            body: JSON.stringify(
+                {
+                    idinmueble: idpers,
+                                    
+                }),
+            
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+this.token
+                }                
+            };
+            
+            fetch(direccion, options)
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = new Error(response.statusText);
+                        error.json = response.json();
+                        this.mensajeError = error.message;
+                        throw error;
+                    } else {
+                        
+                       
+                        console.log("id eliminado");
+                                               
+                    }
+                });
+
+        
         }
     }
+    
 });
+
 </script>
 <style>
-
-</style>
+  
+  </style>
+  
   
   

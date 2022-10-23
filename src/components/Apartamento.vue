@@ -14,18 +14,18 @@
         
 
         <br>
-        <div class="card col-5" style="float:left; margin:12px; min-height: 240px;width: 150%;">
+        <div class="card col-5" style="float:left; margin:12px; min-height: 240px;width: 165%;">
             <div class="card-body">
                 <h5 class="card-title" style="margin-bottom: 12px;">Acciones</h5>
                 <div class="card-text">
                     
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Nombre: </span>
+                        <span class="input-group-text">Valor: </span>
                         <input type="text" placeholder="Digite el nombre..." v-model="nombre" aria-label="First name"
                             class="form-control">
                     </div>
                     <div class="input-group mb-2">
-                        <span class="input-group-text">Telefono: </span>
+                        <span class="input-group-text">Propietario: </span>
                         <input type="text" placeholder="Digite el apellido..." v-model="apellido" aria-label="Last name"
                             class="form-control">
                     </div>
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="card col-12" style="float:left; margin:12px;margin-left: 70%;width: 200%; min-height: 250px;">
+        <div class="card col-12" style="float:left; margin:12px;margin-left: 80%;width: 200%; min-height: 250px;">
             <div class="card-body">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">Consultar: </span>
@@ -182,7 +182,7 @@ import AppVue from '../App.vue';
                         console.log(data);
                         for (const indice in data){
                             
-                            this.apartamentos.push(data[indice].valor+', '+ data[indice].idpropietario.idpersona+', '+ data[indice].idinmueble)
+                            this.apartamentos.push(data[indice].valor+', '+ data[indice].idpropietario+', '+ data[indice].idinmueble)
                             
                         } 
                         
@@ -223,7 +223,7 @@ import AppVue from '../App.vue';
                     }
                 });
         },
-        async crearPersona (nombrePersona ){
+        async crearPersona (nombrePersona){
             const options = {
             method: 'POST',
             body: JSON.stringify(
@@ -268,9 +268,9 @@ import AppVue from '../App.vue';
                     this.crearPersona(Number(this.nombre));
                     //this.consultarPersonas();
                     //console.log(localStorage.getItem("idcreado"));
-                    //const nombreCompleto = `${this.nombre}, ${this.apellido}, ${this.documento}, ${this.idP}`
-                    if (!this.nombres.includes(nombreCompleto)) {
-                        this.nombres.push(nombreCompleto)
+                    const nombreCompleto = `${this.nombre}, ${this.apellido}, ${this.idP}`
+                    if (!this.apartamentos.includes(nombreCompleto)) {
+                        this.apartamentos.push(nombreCompleto)
                         this.nombre = this.apellido = this.documento='';
                         this.mensajeError = '';
                         this.actualizando = false;
