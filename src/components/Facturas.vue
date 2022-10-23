@@ -184,7 +184,7 @@ import AppVue from '../App.vue';
                     'Authorization': 'Bearer '+this.token                }
             };
 
-            fetch('http://localhost:8080/api/facturas', options)
+            fetch('http://132.145.156.154:8080/api/facturas', options)
                 .then(async (response) => {
                     if (!response.ok) {
                         const error = new Error(response.statusText);
@@ -205,7 +205,7 @@ import AppVue from '../App.vue';
                 });
         },async consultarPersonas(idinmu) {
             console.log(idinmu);
-            const direccion = 'http://localhost:8080/api/inmuebles';
+            const direccion = 'http://132.145.156.154:8080/api/inmuebles';
             const options = {
                 method: 'GET',
                 
@@ -257,7 +257,7 @@ import AppVue from '../App.vue';
                 }                
             };
 
-            fetch('http://localhost:8080/api/facturas', options)
+            fetch('http://132.145.156.154:8080/api/facturas', options)
                 .then(async (response) => {
                     if (!response.ok) {
                         const error = new Error(response.statusText);
@@ -299,7 +299,7 @@ import AppVue from '../App.vue';
                 
             },
         async actualizarPersona (fechaFactura,mesFactura,totalFactura,objetoIn, idpers){
-            const direccion = 'http://localhost:8080/api/facturas/'+idpers;
+            const direccion = 'http://132.145.156.154:8080/api/facturas/'+idpers;
             const options = {
             method: 'PUT',
             body: JSON.stringify(
@@ -334,7 +334,7 @@ import AppVue from '../App.vue';
         
         },
         async eliminarApartamento(idpers){
-            const direccion = 'http://localhost:8080/api/facturas/'+idpers;
+            const direccion = 'http://132.145.156.154:8080/api/facturas/'+idpers;
             const options = {
             method: 'DELETE',
             body: JSON.stringify(

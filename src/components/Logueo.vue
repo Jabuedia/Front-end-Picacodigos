@@ -54,7 +54,7 @@ export default({
                     'Content-Type': 'application/json'
                 }
             };
-            fetch('http://localhost:8080/api/auth', options)
+            fetch('http://132.145.156.154:8080/api/auth', options)
             .then(async (response) => {
 
               if (this.password == "") {
