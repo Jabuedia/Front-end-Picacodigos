@@ -1,6 +1,6 @@
 <template>
   <div class="principal">
-    <img src="./img/logo2.png">
+    <img src="../assets/img/logo2.png">
     <div id="eventos">
       <a href=""></a>
     </div>

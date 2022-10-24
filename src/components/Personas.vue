@@ -164,7 +164,7 @@ import AppVue from '../App.vue';
                     'Authorization': 'Bearer '+this.token                }
             };
 
-            fetch('http://132.145.156.154:8080/api/personas', options)
+            fetch('http://132.145.156.154:8080/PicacodigoAdmin/api/personas', options)
                 .then(async (response) => {
                     if (!response.ok) {
                         const error = new Error(response.statusText);
@@ -200,7 +200,7 @@ import AppVue from '../App.vue';
                 }                
             };
 
-            fetch('http://132.145.156.154:8080/api/personas', options)
+            fetch('http://132.145.156.154:8080/PicacodigoAdmin/api/personas', options)
                 .then(async (response) => {
                     if (!response.ok) {
                         const error = new Error(response.statusText);
@@ -242,7 +242,7 @@ import AppVue from '../App.vue';
                 
             },
         async actualizarPersona (nombrePersona, apellidoPersona, emailPersona, idpers){
-            const direccion = 'http://132.145.156.154:8080/api/personas/'+idpers;
+            const direccion = 'http://132.145.156.154:8080/PicacodigoAdmin/api/personas/'+idpers;
             const options = {
             method: 'PUT',
             body: JSON.stringify(
@@ -277,7 +277,7 @@ import AppVue from '../App.vue';
         
         },
         async eliminarPersona (idpers){
-            const direccion = 'http://132.145.156.154:8080/api/personas/'+idpers;
+            const direccion = 'http://132.145.156.154:8080/PicacodigoAdmin/api/personas/'+idpers;
             const options = {
             method: 'DELETE',
             body: JSON.stringify(

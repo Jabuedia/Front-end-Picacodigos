@@ -6,7 +6,7 @@
   </head>
   <div id="formContent">
     <div class="fadeIn first">
-      <img src="./img/logo.png" id="icon" alt="User Icon" />
+      <img src="../assets/img/logo.png" id="icon" alt="User Icon" />
     </div><br>
 
     <form v-on:submit.prevent="formularioLogueo">
@@ -54,7 +54,7 @@ export default({
                     'Content-Type': 'application/json'
                 }
             };
-            fetch('http://132.145.156.154:8080/api/auth', options)
+            fetch('http://132.145.156.154:8080/PicacodigoAdmin/api/auth', options)
             .then(async (response) => {
 
               if (this.password == "") {

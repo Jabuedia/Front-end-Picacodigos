@@ -1,7 +1,7 @@
 <template>
   <div class="principal">
-    <img src="./img/logo2.png">
-    <router-link to="/inicioSesion" @click = "sesionFinalizada"><img src="./img/salir.png" style="width: 60px;margin-left: 70%;"></router-link>
+    <img src="../assets/img/logo2.png">
+    <router-link to="/inicioSesion" @click = "sesionFinalizada"><img src="../assets/img/salir.png" style="width: 60px;margin-left: 70%;"></router-link>
     <div id="eventos">
       <a href=""></a>
     </div>
